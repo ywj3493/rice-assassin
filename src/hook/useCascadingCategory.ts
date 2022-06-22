@@ -23,3 +23,5 @@ export default function useCascadingCategory(): [
   const chooseRandom: () => void = () => {}
   return [CategoryLevel.THEME, null, getChildren, chooseChild, chooseRandom]
 }
+
+useCascadingCategory()
