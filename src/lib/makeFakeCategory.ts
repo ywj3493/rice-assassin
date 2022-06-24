@@ -1,16 +1,16 @@
 import { faker } from "@faker-js/faker";
-import { randomUUID } from "crypto";
 import LargeCategory from "../interface/LargeCategory";
 import ThemeCategory from "../interface/ThemeCategory";
 import MediumCategory from "../interface/MediumCategory";
 import SmallCategory from "../interface/SmallCategory";
 import Category from "../interface/Category";
+import { randomString } from "./randUtil";
 
 // 이 모듈은 개발 모드에서만 사용해야 함
 
 export function makeFakeCategory(): Category {
   return {
-    key: randomUUID(),
+    key: randomString(),
     name: faker.animal.type()
   }
 }

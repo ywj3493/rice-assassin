@@ -11,6 +11,13 @@ export function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min)) + min;
 } 
 
+/**
+ * 6 자리 랜덤 string 을 반환하는 함수
+ * @returns 결과 문자열
+ */
+export function randomString(): string {
+  return (Math.random() + 1).toString(36).substring(7);
+}
 
 /**
  * `T` 타입 배열을 임의 순서로 섞어 변경. Fisher-Yates shuffle 을 사용.
