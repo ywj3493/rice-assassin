@@ -28,7 +28,7 @@ export default class FakeCategoryRepository {
     }))
   }
 
-  getRandomTheme(): ThemeCategory {
+  getRandomTheme(): ThemeCategory| null {
     return randomPick(this.themeList)
   }
 

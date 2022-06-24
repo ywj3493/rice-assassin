@@ -1,15 +1,18 @@
-import LargeCategory from "../class/LargeCategory";
-import MediumCategory from "../class/MediumCategory";
-import SmallCategory from "../class/SmallCategory";
-import Theme from "../class/Theme";
+import LargeCategory from "../interface/LargeCategory";
+import MediumCategory from "../interface/MediumCategory";
+import SmallCategory from "../interface/SmallCategory";
+import ThemeCategory from "../interface/ThemeCategory";
+
+
 
 /**
  * 
  * @returns 전체 주제 리스트
  */
-export function getThemeList(): Theme[] {
+export function getThemeList(): ThemeCategory[] {
   return []
 }
+
 
 /**
  * 

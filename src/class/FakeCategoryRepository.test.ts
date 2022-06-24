@@ -37,7 +37,10 @@ describe("fake category repository generation", () => {
 
   it("get theme child", () => {
     const repo = new FakeCategoryRepository(10, 10, 0, 0)
-    const parent = repo.getRandomTheme() 
+    const parent = repo.getRandomTheme()
+    if (parent === null) {
+      throw Error()
+    }
     const children = repo.getThemeChildren(parent.key)
     expect(repo.largeCategoryList.length).toBe(100)
     expect(children.length).toBe(10)
