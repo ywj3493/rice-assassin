@@ -4,7 +4,7 @@ import Category from "../interface/Category"
 import { randomPick } from "../lib/randUtil"
 
 /**
- * 해당 카테고리의 레벨. string 형태로 저장
+ * 해당 카테고리의 레벨. number 형태로 저장
  */
 export const CategoryLevel = {
   NOTHING: 0,
@@ -16,7 +16,7 @@ export const CategoryLevel = {
 
 export type CategoryLevelType = typeof CategoryLevel[keyof typeof CategoryLevel]
 
-function levelIntToString(levelInt: number): CategoryLevelType {
+function levelIntToOut(levelInt: number): CategoryLevelType {
   switch (levelInt) {
     case (0):
       return CategoryLevel.NOTHING
@@ -32,11 +32,6 @@ function levelIntToString(levelInt: number): CategoryLevelType {
       return CategoryLevel.NOTHING
   }
 }
-
-const rootCategory: Category = {
-  key: "root",
-  name: "root"
-} as const
 
 /**
  * @returns [  
@@ -84,5 +79,5 @@ export default function useCascadingCategory(): [
     setCurrentCategory(choice)
     setLevelInt(levelInt+1)
   }
-  return [levelIntToString(levelInt), currentCategory, getChildren, chooseChild, chooseRandom]
+  return [levelIntToOut(levelInt), currentCategory, getChildren, chooseChild, chooseRandom]
 }
