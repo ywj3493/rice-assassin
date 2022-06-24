@@ -1,6 +1,5 @@
 import { randomInt } from "crypto"
 
-
 describe("randomInt", () => {
   it("randomInt", () => {
     expect(randomInt(0, 1)).toBe(0)
@@ -16,4 +15,5 @@ describe("randomInt", () => {
     })
   })
 })
+
 
