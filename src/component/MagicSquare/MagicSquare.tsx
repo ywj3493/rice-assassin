@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Category from "../../interface/Category";
+import { randomSlice } from "../../lib/randUtil";
 
 const MagicSquare = ({
   currentCategory,
@@ -7,7 +8,7 @@ const MagicSquare = ({
   chooseChild,
   chooseRandom,
 }: {
-  currentCategory: Category | null;
+  currentCategory: Category;
   getChildren: () => Category[];
   chooseChild: (childKey: string) => void;
   chooseRandom: () => void;
@@ -16,7 +17,15 @@ const MagicSquare = ({
   const [selected, setSelected] = useState<number | null>();
   const [isSpinning, setIsSpinning] = useState<boolean>(false);
   const rotateList = [1, 2, 5, 8, 7, 6, 3, 0];
-  const itemList = [...getChildren()];
+  const tempList = getChildren();
+  const itemList =
+    tempList.length === 8
+      ? tempList.splice(4, 0, currentCategory)
+      : [...randomSlice(tempList, 8 - tempList.length), ...tempList].splice(
+          4,
+          0,
+          currentCategory
+        );
 
   useEffect(() => {
     console.dir(
@@ -77,7 +86,6 @@ const MagicSquare = ({
                     <svg className={`animate-spin h-5 w-5 fill-black`} />
                   ) : (
                     itemList[index].name
-                    // <svg className={`animate-spin h-5 w-5 fill-black`} />
                   )}
                 </div>
               );
