@@ -1,16 +1,42 @@
-import Category from "../class/Category"
+import { useRef, useState } from "react"
+import FakeCategoryRepository from "../class/FakeCategoryRepository"
+import Category from "../interface/Category"
+import { randomPick } from "../lib/randUtil"
 
 /**
  * 해당 카테고리의 레벨. string 형태로 저장
  */
 export const CategoryLevel = {
-  THEME: 'theme',
-  LARGE_CATEGORY: 'large_category',
-  MEDIUM_CATEGORY: 'medium_category',
-  SMALL_CATEGORY: 'small_category'
+  NOTHING: 0,
+  THEME: 1,
+  LARGE_CATEGORY: 2,
+  MEDIUM_CATEGORY: 3,
+  SMALL_CATEGORY: 4
 } as const
 
+export type CategoryLevelType = typeof CategoryLevel[keyof typeof CategoryLevel]
 
+function levelIntToString(levelInt: number): CategoryLevelType {
+  switch (levelInt) {
+    case (0):
+      return CategoryLevel.NOTHING
+    case (1):
+      return CategoryLevel.THEME
+    case (2):
+      return CategoryLevel.LARGE_CATEGORY
+    case (3):
+      return CategoryLevel.MEDIUM_CATEGORY
+    case (4):
+      return CategoryLevel.SMALL_CATEGORY
+    default:
+      return CategoryLevel.NOTHING
+  }
+}
+
+const rootCategory: Category = {
+  key: "root",
+  name: "root"
+} as const
 
 /**
  * @returns [  
@@ -22,14 +48,41 @@ export const CategoryLevel = {
  * ] 
  */
 export default function useCascadingCategory(): [
-  currentLevel: typeof CategoryLevel[keyof typeof CategoryLevel],
+  currentLevel: CategoryLevelType,
   currentCategory: Category | null,
   getChildren: () => Category[],
   chooseChild: (childKey: string) => void,
   chooseRandom: () => void
 ] {
-  const getChildren: () => Category[] = () => []
-  const chooseChild: (childKey: string) => void = () => {}
-  const chooseRandom: () => void = () => {}
-  return ["theme", null, getChildren, chooseChild, chooseRandom]
+  const repo = useRef(new FakeCategoryRepository(4, 8, 8, 8))
+  const [levelInt, setLevelInt] = useState(0)
+  const [currentCategory, setCurrentCategory] = useState<Category|null>(null)
+  const getChildren = () => {
+    if (levelInt === 4) {
+      return []
+    }
+    if (currentCategory === null) {
+      return repo.current.themeList
+    }
+    return repo.current.getCategoryChildren(levelInt, currentCategory.key)
+  }
+  const chooseChild = (childKey: string) => {
+    const children = getChildren()
+    const choice = children.find((category) => category.key === childKey)
+    if (choice === undefined) {
+      return
+    }
+    setCurrentCategory(choice)
+    setLevelInt(levelInt+1)
+  }
+  const chooseRandom = () => {
+    const children = getChildren()
+    if (children.length === 0) {
+      return 
+    }
+    const choice = randomPick(children)
+    setCurrentCategory(choice)
+    setLevelInt(levelInt+1)
+  }
+  return [levelIntToString(levelInt), currentCategory, getChildren, chooseChild, chooseRandom]
 }
