@@ -1,43 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Category from "../../interface/Category";
-import { randomSlice } from "../../lib/randUtil";
+import { CategoryLevelType } from "../../hook/useCascadingCategory";
+import MagicSquareSubject from "./MagicSquareSubject";
+import MagicSquareItem from "./MagicSquareItem";
 
 const MagicSquare = ({
+  currentLevel,
   currentCategory,
-  getChildren,
+  itemList,
   chooseChild,
   chooseRandom,
 }: {
+  currentLevel: CategoryLevelType;
   currentCategory: Category;
-  getChildren: () => Category[];
+  itemList: Category[];
   chooseChild: (childKey: string) => void;
   chooseRandom: () => void;
 }) => {
   const [highlight, setHighlight] = useState<number | null>();
-  const [selected, setSelected] = useState<number | null>();
   const [isSpinning, setIsSpinning] = useState<boolean>(false);
   const rotateList = [1, 2, 5, 8, 7, 6, 3, 0];
-  const tempList = getChildren();
-  const itemList =
-    tempList.length === 8
-      ? tempList.splice(4, 0, currentCategory)
-      : [...randomSlice(tempList, 8 - tempList.length), ...tempList].splice(
-          4,
-          0,
-          currentCategory
-        );
 
   useEffect(() => {
-    console.dir(
-      selected !== null && selected !== undefined ? itemList[selected] : "none"
-    );
-  }, [selected]);
+    setHighlight(null);
+  }, [isSpinning]);
 
   const startRoulette = (time: number, index: number, count: number) => {
     setIsSpinning(true);
     if (time > 800) {
-      setSelected(rotateList[(index + 7) % 8]);
-      setIsSpinning(false);
+      chooseChild(itemList[rotateList[(index + 7) % 8]].key);
       return;
     }
     setTimeout(() => {
@@ -52,7 +43,12 @@ const MagicSquare = ({
 
   const onClickItemButton = (value: number) => {
     setHighlight(value);
-    setSelected(value);
+    chooseChild(itemList[value].key);
+  };
+
+  const onAnimationEnd = () => {
+    console.dir("onAnimationEnd");
+    setIsSpinning(false);
   };
 
   return (
@@ -62,32 +58,22 @@ const MagicSquare = ({
           <div className="flex flex-row" key={`ms-x-${x}`}>
             {[...Array(3)].map((value, y) => {
               const index = x * 3 + y;
-              return (
-                <div
-                  className={`flex w-40 h-40 border-[1px] justify-center leading-[10] ${
-                    index !== 4 ? `hover:scale-110` : ``
-                  } transition-all ${
-                    highlight !== null &&
-                    highlight !== undefined &&
-                    highlight === index
-                      ? `scale-110 border-yellow-300 border-4`
-                      : ``
-                  }
-                  ${isSpinning ? `pointer-events-none` : `pointer-events-auto`}
-                  `}
-                  key={`ms-y-${index}`}
-                  onClick={
-                    index === 4
-                      ? onClickRandomButton
-                      : () => onClickItemButton(index)
-                  }
-                >
-                  {index === 4 && isSpinning ? (
-                    <svg className={`animate-spin h-5 w-5 fill-black`} />
-                  ) : (
-                    itemList[index].name
-                  )}
-                </div>
+              return index === 4 ? (
+                <MagicSquareSubject
+                  key={`ms-y-${currentLevel}${index}`}
+                  subject={itemList[index]?.name}
+                  isSpinning={isSpinning}
+                  onClickRandomButton={onClickRandomButton}
+                />
+              ) : (
+                <MagicSquareItem
+                  key={`ms-y-${currentLevel}${index}`}
+                  index={index}
+                  item={itemList[index]?.name}
+                  highlight={highlight === index}
+                  onClickItemButton={(index) => onClickItemButton(index)}
+                  onAnimationEnd={onAnimationEnd}
+                />
               );
             })}
           </div>
