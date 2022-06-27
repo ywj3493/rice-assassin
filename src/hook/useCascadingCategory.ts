@@ -1,6 +1,7 @@
 import { useRef, useState } from "react"
 import FakeCategoryRepository from "../class/FakeCategoryRepository"
 import Category from "../interface/Category"
+import { getCategoryChildren, getThemeList } from "../lib/categoryGetters"
 import { randomPick } from "../lib/randUtil"
 
 /**
@@ -42,7 +43,7 @@ function levelIntToOut(levelInt: number): CategoryLevelType {
  * `chooseRandom` 하위 카테고리 중 하나를 랜덤으로 선택하는 함수  
  * ] 
  */
-export default function useCascadingCategory(): [
+export function useMockCascadingCategory(): [
   currentLevel: CategoryLevelType,
   currentCategory: Category | null,
   getChildren: () => Category[],
@@ -74,6 +75,54 @@ export default function useCascadingCategory(): [
     const children = getChildren()
     if (children.length === 0) {
       return 
+    }
+    const choice = randomPick(children)
+    setCurrentCategory(choice)
+    setLevelInt(levelInt+1)
+  }
+  return [levelIntToOut(levelInt), currentCategory, getChildren, chooseChild, chooseRandom]
+}
+
+/**
+ * @returns [
+ * `currentLevel` 현재 선택된 카테고리의 레벨,
+ * `currentCategory` 현재 선택된 카테고리 객체 (없으면 null 반환),
+ * `getChildren` 현재 카테고리 하위의 카테고리를 반환하는 함수,
+ * `chooseChild` 하위 카테고리의 키를 인자로 받아 현재 카테고리로 선택하는 함수,
+ * `chooseRandom` 하위 카테고리 중 하나를 랜덤으로 선택하는 함수
+ * ]
+ */
+export default function useCascadingCategory(): [
+  currentLevel: CategoryLevelType,
+  currentCategory: Category | null,
+  getChildren: () => Category[],
+  chooseChild: (childKey: string) => void,
+  chooseRandom: () => void
+] {
+  const [levelInt, setLevelInt] = useState(0)
+  const [currentCategory, setCurrentCategory] = useState<Category|null>(null)
+  const getChildren = () => {
+    if (levelInt === 4) {
+      return []
+    }
+    if (currentCategory === null) {
+      return getThemeList()
+    }
+    return getCategoryChildren(levelInt, currentCategory.key)
+  }
+  const chooseChild = (childKey: string) => {
+    const children = getChildren()
+    const choice = children.find((category) => category.key === childKey)
+    if (choice === undefined) {
+      return 
+    }
+    setCurrentCategory(choice)
+    setLevelInt(levelInt+1)
+  }
+  const chooseRandom = () => {
+    const children = getChildren()
+    if (children.length === 0) {
+      return
     }
     const choice = randomPick(children)
     setCurrentCategory(choice)
