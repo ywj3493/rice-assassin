@@ -66,3 +66,22 @@ export function randomSlice<T>(arr: T[], len: number): T[] {
   }
   return shuffle(arr).slice(0, len)
 }
+
+/**
+ * `arr`의 길이가 `len` 보다 작으면 임의 요소를 중복시켜 `len` 길이로 만들어 반환.
+ * `arr`의 길이가 `len` 보다 크면 len의 길이만큼만 임의 추출하여 반환.
+ * @param arr 값을 추출할 배열.
+ * @param len 결과물의 길이.
+ * @returns 
+ */
+export function fillUpToLen<T>(arr: T[], len:number): T[] {
+  if (len <= arr.length) {
+    return randomSlice(arr, len);
+  }
+  const diff = len - arr.length
+  const additional = []
+  for (let i=0; i<diff; i++) {
+    additional.push(randomPick(arr)?? arr[0])
+  }
+  return shuffle([...arr, ...additional])
+}
