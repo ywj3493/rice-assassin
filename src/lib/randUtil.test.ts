@@ -1,4 +1,5 @@
 import { randomInt } from "crypto"
+import { fillUpToLen } from "./randUtil"
 
 describe("randomInt", () => {
   it("randomInt", () => {
@@ -16,4 +17,10 @@ describe("randomInt", () => {
   })
 })
 
-
+describe("fillUpToLen", () => {
+  it("fillUpToLen", () => {
+    expect(fillUpToLen([0, 1], 2)).toEqual([0, 1])
+    expect(fillUpToLen([0], 3)).toEqual([0, 0, 0])
+    expect(fillUpToLen([0, 1, 2], 3)).toEqual([0, 1, 2])
+  })
+})
