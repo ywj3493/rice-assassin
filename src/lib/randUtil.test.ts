@@ -18,9 +18,13 @@ describe("randomInt", () => {
 })
 
 describe("fillUpToLen", () => {
-  it("fillUpToLen", () => {
+  it("number", () => {
     expect(fillUpToLen([0, 1], 2)).toEqual([0, 1])
     expect(fillUpToLen([0], 3)).toEqual([0, 0, 0])
     expect(fillUpToLen([0, 1, 2], 3)).toEqual([0, 1, 2])
+  })
+   
+  it("themeCategory", () => {
+    expect(fillUpToLen([{key: 0, name: "0"}, {key: 1, name: "1"}], 2)).toEqual([{key: 0, name: "0"}, {key: 1, name: "1"}])
   })
 })
