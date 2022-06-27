@@ -24,7 +24,7 @@ export function randomString(): string {
  * @param arr 섞을 배열
  */
 export function shuffleMutate<T>(arr: T[]): void {
-  for (let idx=arr.length-1; idx>0; idx++) {
+  for (let idx=arr.length-1; idx>0; idx--) {
     const randomPosition = Math.floor(Math.random() * (idx + 1));
     const temporary = arr[idx]
     arr[idx] = arr[randomPosition]
@@ -79,9 +79,6 @@ export function fillUpToLen<T>(arr: T[], len:number): T[] {
     return randomSlice(arr, len);
   }
   const diff = len - arr.length
-  const additional = []
-  for (let i=0; i<diff; i++) {
-    additional.push(randomPick(arr)?? arr[0])
-  }
+  const additional = Array.from({length: diff}).map(() => randomPick(arr)?? arr[0])
   return shuffle([...arr, ...additional])
 }
