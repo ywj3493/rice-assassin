@@ -43,7 +43,7 @@ describe("list getter test", () => {
 
   it("getCategoryChildren level 0", () => {
     const themeList = getThemeList()
-    const firstChild = getCategoryChildren(0, themeList[0].key)
+    const firstChild = getCategoryChildren(1, themeList[0].key)
     expect(firstChild).toBeInstanceOf(Array)
     expect(firstChild.length).toBeGreaterThanOrEqual(1)
     expect(firstChild[0].parentKey).toBe(themeList[0].key)
@@ -51,7 +51,7 @@ describe("list getter test", () => {
 
   it("getCategoryChildren level 1", () => {
     const themeList = getThemeList()
-    const firstChild = getCategoryChildren(0, themeList[0].key)
+    const firstChild = getCategoryChildren(2, themeList[0].key)
     const secondChild = getCategoryChildren(1, firstChild[0].key)
     expect(secondChild).toBeInstanceOf(Array)
     expect(secondChild.length).toBeGreaterThanOrEqual(1)

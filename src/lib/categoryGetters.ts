@@ -63,11 +63,11 @@ export function getRandomTheme(): ThemeCategory | null {
  */
 export function getCategoryChildren(level: number, key: string): ChildCategory[] {
   switch (level) {
-    case 0:
-      return getLargeCategoryList(key)
     case 1:
-      return getMediumCategoryList(key)
+      return getLargeCategoryList(key)
     case 2:
+      return getMediumCategoryList(key)
+    case 3:
       return getSmallCategoryList(key)
     default:
       return []
