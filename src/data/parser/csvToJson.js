@@ -3,8 +3,8 @@ const path = require('path')
 
 const inDir = "src/data/csv/"
 const outDir = "src/data/json/"
-const inFileNames = ["themeCategory.csv", "largeCategory.csv", "mediumCategory.csv"]
-const outFileNames = ["themeCategory.json", "largeCategory.json", "mediumCategory.json"]
+const inFileNames = ["themeCategory.csv", "largeCategory.csv", "mediumCategory.csv", "smallCategory.csv"]
+const outFileNames = ["themeCategory.json", "largeCategory.json", "mediumCategory.json", "smallCategory.json"]
 
 for (let i=0; i<inFileNames.length; i++) {
   const inFileName = path.resolve(inDir, inFileNames[i]);
