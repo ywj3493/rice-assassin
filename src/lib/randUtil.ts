@@ -12,7 +12,7 @@ export function randomInt(min: number, max: number): number {
 } 
 
 /**
- * 6 자리 랜덤 string 을 반환하는 함수
+ * 5~6 자리 랜덤 string 을 반환하는 함수
  * @returns 결과 문자열
  */
 export function randomString(): string {
