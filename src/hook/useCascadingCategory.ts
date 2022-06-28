@@ -35,6 +35,8 @@ function levelIntToOut(levelInt: number): CategoryLevelType {
 }
 
 /**
+ * `useCascadingCategory` 의 목업 버전. 실제 데이터를 사용하지 않고 `faker` 모듈에서 생성된 가짜 데이터 사용.  
+ * `useCascadingCategory` 가 문제를 일으킬 때 이 함수로 대체하여 테스트 가능.  
  * @returns [  
  * `currentLevel` 현재 선택된 카테고리의 레벨,  
  * `currentCategory` 현재 선택된 카테고리 객체 (없으면 null 반환),  
@@ -84,12 +86,13 @@ export function useMockCascadingCategory(): [
 }
 
 /**
+ * 테마 카테고리부터 시작해서 하위 카테고리를 순차 선택하는 서비스를 위한 훅.
  * @returns [
- * `currentLevel` 현재 선택된 카테고리의 레벨,
- * `currentCategory` 현재 선택된 카테고리 객체 (없으면 null 반환),
- * `getChildren` 현재 카테고리 하위의 카테고리를 반환하는 함수,
- * `chooseChild` 하위 카테고리의 키를 인자로 받아 현재 카테고리로 선택하는 함수,
- * `chooseRandom` 하위 카테고리 중 하나를 랜덤으로 선택하는 함수
+ * `currentLevel` 현재 선택된 카테고리의 레벨,  
+ * `currentCategory` 현재 선택된 카테고리 객체 (없으면 null 반환),  
+ * `getChildren` 현재 카테고리 하위의 카테고리를 반환하는 함수,  
+ * `chooseChild` 하위 카테고리의 키를 인자로 받아 현재 카테고리로 선택하는 함수,  
+ * `chooseRandom` 하위 카테고리 중 하나를 랜덤으로 선택하는 함수  
  * ]
  */
 export default function useCascadingCategory(): [
