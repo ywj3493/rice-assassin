@@ -23,9 +23,12 @@ function App() {
     0,
     currentCategory ? currentCategory : primaryCurrentCategory
   );
+  const onClickResetButton = () => {
+    console.dir("onClickResetButton");
+  };
   return (
-    <div>
-      <div className="bg-blue-400 font-bold">오늘의 밥도둑</div>
+    <div className="bg-ra-100 font-bold">
+      <div>오늘의 밥도둑</div>
       <MagicSquare
         currentLevel={currentLevel}
         currentCategory={
@@ -34,6 +37,7 @@ function App() {
         itemList={itemList}
         chooseChild={chooseChild}
         chooseRandom={chooseRandom}
+        onClickResetButton={onClickResetButton}
       />
     </div>
   );
