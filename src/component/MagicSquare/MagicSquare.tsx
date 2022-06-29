@@ -24,11 +24,6 @@ const MagicSquare = ({
   const [isSpinning, setIsSpinning] = useState<boolean>(false);
   const rotateList = [1, 2, 5, 8, 7, 6, 3, 0];
 
-  //onSelected
-  useEffect(() => {
-    console.dir(`onSelected: ${selected}`);
-  }, [selected]);
-
   const startRoulette = (time: number, index: number, count: number) => {
     setIsSpinning(true);
     if (time > 800) {
@@ -55,9 +50,7 @@ const MagicSquare = ({
   };
 
   const onAnimationEnd = () => {
-    console.dir("onAnimationEnd");
     if (selected) {
-      console.dir("chooseChild");
       chooseChild(itemList[selected]?.key);
     }
     setHighlight(null);
@@ -76,7 +69,7 @@ const MagicSquare = ({
                 <MagicSquareSubject
                   key={`ms-y-${currentLevel}${index}`}
                   currentLevel={currentLevel}
-                  subject={itemList[index]?.name}
+                  subject={currentCategory.name}
                   isSpinning={isSpinning}
                   onClickRandomButton={onClickRandomButton}
                   onClickSearchButton={onClickSearchButton}
