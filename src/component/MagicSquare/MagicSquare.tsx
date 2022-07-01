@@ -23,6 +23,17 @@ const MagicSquare = ({
   const [selected, setSelected] = useState<number | null>();
   const [isSpinning, setIsSpinning] = useState<boolean>(false);
   const rotateList = [1, 2, 5, 8, 7, 6, 3, 0];
+  const originList = [
+    `origin-top-left`,
+    `origin-top`,
+    `origin-top-right`,
+    `origin-left`,
+    `origin-center`,
+    `origin-right`,
+    `origin-bottom-left`,
+    `origin-bottom`,
+    `orifin-bottom-right`,
+  ];
 
   const startRoulette = (time: number, index: number, count: number) => {
     setIsSpinning(true);
@@ -50,12 +61,14 @@ const MagicSquare = ({
   };
 
   const onAnimationEnd = () => {
-    if (selected) {
-      chooseChild(itemList[selected]?.key);
-    }
-    setHighlight(null);
-    setIsSpinning(false);
-    setSelected(null);
+    setTimeout(() => {
+      if (selected) {
+        chooseChild(itemList[selected]?.key);
+      }
+      setHighlight(null);
+      setIsSpinning(false);
+      setSelected(null);
+    }, 100);
   };
 
   return (
@@ -64,7 +77,7 @@ const MagicSquare = ({
         return (
           <div className={`flex flex-row font-sans`} key={`ms-x-${x}`}>
             {[...Array(3)].map((value, y) => {
-              const index = x * 3 + y;
+              const index: number = x * 3 + y;
               return index === 4 ? (
                 <MagicSquareSubject
                   key={`ms-y-${currentLevel}${index}`}
