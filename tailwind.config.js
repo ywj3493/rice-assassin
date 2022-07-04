@@ -17,7 +17,7 @@ module.exports = {
     },
     extend: {
       animation: {
-        larger: "larger 1s ease-in",
+        larger: "larger 0.3s linear",
         spin1: "spin 0.5s linear",
         wiggle: "wiggle 1s ease-in-out ",
       },
