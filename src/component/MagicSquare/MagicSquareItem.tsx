@@ -19,7 +19,7 @@ const MagicSquareItem = ({
     className={`flex w-40 h-40 border-[1px] justify-center leading-[10] text-white 
     bg-ra-200
     transition-all ${highlight ? `border-yellow-300 border-4` : ``}
-    ${animation ? `animate-larger` : `hover:scale-110 animate-none`}
+    ${animation ? `animate-larger` : `hover:scale-105 animate-none`}
     `}
     onClick={() => onClickItemButton(index)}
     onAnimationEnd={() => onAnimationEnd()}
@@ -27,5 +27,4 @@ const MagicSquareItem = ({
     {item}
   </div>
 );
-
 export default memo(MagicSquareItem);

@@ -32,18 +32,20 @@ const MagicSquare = ({
     `origin-right`,
     `origin-bottom-left`,
     `origin-bottom`,
-    `orifin-bottom-right`,
+    `origin-bottom-right`,
   ];
 
   const startRoulette = (time: number, index: number, count: number) => {
     setIsSpinning(true);
     if (time > 800) {
-      setSelected(rotateList[(index + 7) % 8]);
+      setTimeout(() => {
+        setSelected(rotateList[(index + 7) % 8]);
+      }, 200);
       return;
     }
     setTimeout(() => {
       setHighlight(rotateList[index % 8]);
-      startRoulette(time * 1.4, index + 1, count + 1);
+      startRoulette(time * 1.25, index + 1, count + 1);
     }, time);
   };
 

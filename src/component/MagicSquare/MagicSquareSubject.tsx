@@ -1,6 +1,5 @@
 import React, { memo, useEffect, useState } from "react";
 import { CategoryLevelType } from "../../hook/useCascadingCategory";
-import Category from "../../interface/Category";
 
 const MagicSquareSubject = ({
   currentLevel,
@@ -54,14 +53,18 @@ const MagicSquareSubject = ({
           >
             {currentLevel !== 3 ? (
               <button
-                className={`bg-ra-400 p-1 m-1 text-center rounded text-white`}
+                className={`bg-ra-400 p-1 m-1 text-center rounded text-white transition-all ${
+                  mouseOver ? `block` : `hidden`
+                }`}
                 onClick={onClickRandomButton}
               >
                 랜덤 선택
               </button>
             ) : (
               <button
-                className={`bg-ra-400 p-1 m-1 text-center rounded text-white`}
+                className={`bg-ra-400 p-1 m-1 text-center rounded text-white transition-all ${
+                  mouseOver ? `block` : `hidden`
+                }`}
                 onClick={onClickResetButton}
               >
                 다시하기
@@ -69,7 +72,9 @@ const MagicSquareSubject = ({
             )}
             {currentLevel > 1 ? (
               <button
-                className={`bg-ra-400 p-1 m-1 text-center rounded text-white`}
+                className={`bg-ra-400 p-1 m-1 text-center rounded text-white transition-all ${
+                  mouseOver ? `block` : `hidden`
+                }`}
                 onClick={onClickSearchButton}
               >
                 검색
