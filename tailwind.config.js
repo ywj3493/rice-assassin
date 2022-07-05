@@ -17,12 +17,12 @@ module.exports = {
     },
     extend: {
       animation: {
-        larger: "larger 0.3s linear",
+        flip: "flip 0.3s linear",
         spin1: "spin 0.5s linear",
         wiggle: "wiggle 1s ease-in-out ",
       },
       keyframes: {
-        larger: {
+        flip: {
           "0%": { transform: "scaleX(1)" },
           "100%": { transform: "scaleX(-1)" },
         },
