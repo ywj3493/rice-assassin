@@ -1,10 +1,8 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 const Footer = () => (
   <section className={`p-12`}>
     <div className={`bg-slate-100 h-[2px] rounded-full my-4`}></div>
     <div className={`flex items-center flex-col`}>
-      <h1 className={``}>Contact</h1>
+      <h1 className={`text-2xl`}>Contact</h1>
       <div className={`flex m-4`}>
         <a
           className={`w-8 mx-2`}
