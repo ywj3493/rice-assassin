@@ -107,7 +107,8 @@ export default function useCascadingCategory(): [
   currentCategory: Category | null,
   getChildren: () => Category[],
   chooseChild: (childKey: string | null) => void,
-  chooseRandom: () => void
+  chooseRandom: () => void,
+  resetLevel: () => void
 ] {
   const [levelInt, setLevelInt] = useState(0);
   const [currentCategory, setCurrentCategory] = useState<Category | null>(null);
@@ -138,11 +139,16 @@ export default function useCascadingCategory(): [
     setCurrentCategory(choice);
     setLevelInt(levelInt + 1);
   };
+  const resetLevel = () => {
+    setLevelInt(0);
+    setCurrentCategory(null);
+  };
   return [
     levelIntToOut(levelInt),
     currentCategory,
     getChildren,
     chooseChild,
     chooseRandom,
+    resetLevel,
   ];
 }
