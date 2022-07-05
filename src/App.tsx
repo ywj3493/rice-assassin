@@ -17,6 +17,7 @@ function App() {
     getChildren,
     chooseChild,
     chooseRandom,
+    resetLevel,
   ] = useCascadingCategory();
   const primaryCurrentCategory: Category = { key: "primary", name: "테마" };
   const itemList = fillUpToLen(getChildren(), 8);
@@ -25,9 +26,6 @@ function App() {
     0,
     currentCategory ? currentCategory : primaryCurrentCategory
   );
-  const onClickResetButton = () => {
-    console.dir("onClickResetButton");
-  };
   return (
     <div className="bg-ra-100 font-bold">
       <Header />
@@ -39,8 +37,7 @@ function App() {
           }
           itemList={itemList}
           chooseChild={chooseChild}
-          chooseRandom={chooseRandom}
-          onClickResetButton={onClickResetButton}
+          resetLevel={resetLevel}
         />
       </section>
       <Footer />

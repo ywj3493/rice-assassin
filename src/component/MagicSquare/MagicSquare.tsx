@@ -9,15 +9,13 @@ const MagicSquare = ({
   currentCategory,
   itemList,
   chooseChild,
-  chooseRandom,
-  onClickResetButton,
+  resetLevel,
 }: {
   currentLevel: CategoryLevelType;
   currentCategory: Category;
   itemList: Category[];
   chooseChild: (childKey: string) => void;
-  chooseRandom: () => void;
-  onClickResetButton: () => void;
+  resetLevel: () => void;
 }) => {
   const [highlight, setHighlight] = useState<number | null>();
   const [selected, setSelected] = useState<number | null>();
@@ -67,6 +65,10 @@ const MagicSquare = ({
   const onClickItemButton = (value: number) => {
     setHighlight(value);
     setSelected(value);
+  };
+
+  const onClickResetButton = () => {
+    resetLevel();
   };
 
   const onAnimationEnd = () => {
