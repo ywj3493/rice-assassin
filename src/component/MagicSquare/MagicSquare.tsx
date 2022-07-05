@@ -35,9 +35,16 @@ const MagicSquare = ({
     `origin-bottom-right`,
   ];
 
-  const startRoulette = (time: number, index: number, count: number) => {
+  /**
+   * 마방진의 item 부분을 룰렛 돌리듯 랜덤으로 선택하게 하는 함수, 재귀를 통해 순서대로 강조 하게 된다.
+   * @param time : 다음 네모칸이 강조 되는 시간
+   * @param index : 강조될 칸의 index
+   * @returns
+   */
+  const startRoulette = (time: number, index: number) => {
     setIsSpinning(true);
     if (time > 800) {
+      //해당 setTimeout 함수의 delay 값이 마지막 칸에 멈춘 후 선택하는 로직으로 이동하게 하는 최소 값
       setTimeout(() => {
         setSelected(rotateList[(index + 7) % 8]);
       }, 200);
@@ -45,12 +52,12 @@ const MagicSquare = ({
     }
     setTimeout(() => {
       setHighlight(rotateList[index % 8]);
-      startRoulette(time * 1.25, index + 1, count + 1);
+      startRoulette(time * 1.25, index + 1);
     }, time);
   };
 
   const onClickRandomButton = () => {
-    startRoulette(20, Math.floor(Math.random() * 8), 0);
+    startRoulette(20, Math.floor(Math.random() * 8));
   };
 
   const onClickSearchButton = () => {
@@ -70,7 +77,7 @@ const MagicSquare = ({
       setHighlight(null);
       setIsSpinning(false);
       setSelected(null);
-    }, 100);
+    }, 0);
   };
 
   return (
@@ -96,11 +103,7 @@ const MagicSquare = ({
                   index={index}
                   item={itemList[index]?.name}
                   highlight={highlight === index}
-                  animation={
-                    selected === index
-                      ? `animate-larger${rotateList[index]}`
-                      : null
-                  }
+                  animation={selected === index}
                   onClickItemButton={() => onClickItemButton(index)}
                   onAnimationEnd={() => onAnimationEnd()}
                 />
