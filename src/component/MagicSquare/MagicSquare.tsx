@@ -19,8 +19,19 @@ const MagicSquare = ({
 }) => {
   const [highlight, setHighlight] = useState<number | null>();
   const [selected, setSelected] = useState<number | null>();
+  const [exceptList, setExceptList] = useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+  ]);
   const [isSpinning, setIsSpinning] = useState<boolean>(false);
-  const rotateList = [1, 2, 5, 8, 7, 6, 3, 0];
+  const rotateList = [0, 1, 2, 5, 8, 7, 6, 3];
   const originList = [
     `origin-top-left`,
     `origin-top`,
@@ -32,6 +43,20 @@ const MagicSquare = ({
     `origin-bottom`,
     `origin-bottom-right`,
   ];
+
+  useEffect(() => {
+    setExceptList([
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+    ]);
+  }, [currentLevel]);
 
   /**
    * 마방진의 item 부분을 룰렛 돌리듯 랜덤으로 선택하게 하는 함수, 재귀를 통해 순서대로 강조 하게 된다.
@@ -48,10 +73,14 @@ const MagicSquare = ({
       }, 200);
       return;
     }
-    setTimeout(() => {
-      setHighlight(rotateList[index % 8]);
-      startRoulette(time * 1.25, index + 1);
-    }, time);
+    if (exceptList[rotateList[index % 8]]) {
+      startRoulette(time, index + 1);
+    } else {
+      setTimeout(() => {
+        setHighlight(rotateList[index % 8]);
+        startRoulette(time * 1.25, index + 1);
+      }, time);
+    }
   };
 
   const onClickRandomButton = () => {
@@ -71,9 +100,23 @@ const MagicSquare = ({
     resetLevel();
   };
 
+  const onChangeCheckbox = (index: number) => {
+    if (
+      exceptList.reduce((prev, curr) => prev + (curr ? 0 : 1), 0) <= 2
+        ? !exceptList[index]
+        : false
+    ) {
+      alert("두개 이하로 아이템을 비활성화 할 수는 없습니다.");
+      return;
+    }
+    const temp = exceptList;
+    temp[index] = !temp[index];
+    setExceptList([...temp]);
+  };
+
   const onAnimationEnd = () => {
     setTimeout(() => {
-      if (selected) {
+      if (selected != null && selected != undefined) {
         chooseChild(itemList[selected]?.key);
       }
       setHighlight(null);
@@ -102,11 +145,14 @@ const MagicSquare = ({
               ) : (
                 <MagicSquareItem
                   key={`ms-y-${currentLevel}${index}`}
+                  currentLevel={currentLevel}
                   index={index}
                   item={itemList[index]?.name}
                   highlight={highlight === index}
                   animation={selected === index}
-                  onClickItemButton={() => onClickItemButton(index)}
+                  except={exceptList[index]}
+                  onClickItemButton={onClickItemButton}
+                  onChangeCheckbox={onChangeCheckbox}
                   onAnimationEnd={() => onAnimationEnd()}
                 />
               );
@@ -118,4 +164,4 @@ const MagicSquare = ({
   );
 };
 
-export default MagicSquare;
+export default memo(MagicSquare);

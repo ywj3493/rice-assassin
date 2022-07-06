@@ -1,18 +1,28 @@
 import React, { memo } from "react";
+import {
+  CategoryLevel,
+  CategoryLevelType,
+} from "../../hook/useCascadingCategory";
 
 const MagicSquareItem = ({
+  currentLevel,
   index,
   item,
   highlight,
   animation,
+  except,
   onClickItemButton,
+  onChangeCheckbox,
   onAnimationEnd,
 }: {
+  currentLevel: CategoryLevelType;
   index: number;
   item: string;
   highlight: boolean;
   animation: boolean;
+  except: boolean;
   onClickItemButton: (index: number) => void;
+  onChangeCheckbox: (index: number) => void;
   onAnimationEnd: () => void;
 }) => (
   <div
@@ -24,6 +34,17 @@ const MagicSquareItem = ({
     onClick={() => onClickItemButton(index)}
     onAnimationEnd={() => onAnimationEnd()}
   >
+    {currentLevel === CategoryLevel.NOTHING ||
+    currentLevel === CategoryLevel.MEDIUM_CATEGORY ? null : (
+      <input
+        type="checkbox"
+        checked={!except}
+        onClick={(events) => {
+          events.stopPropagation();
+        }}
+        onChange={() => onChangeCheckbox(index)}
+      ></input>
+    )}
     {item}
   </div>
 );
