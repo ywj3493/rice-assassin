@@ -16,7 +16,7 @@ const MagicSquareSubject = ({
   subject: string;
   isSpinning: boolean;
   onClickRandomButton: () => void;
-  onClickSearchButton: () => void;
+  onClickSearchButton: (value: string) => void;
   onClickResetButton: () => void;
 }) => {
   const [mouseOver, setMouseOver] = useState<boolean>(false);
@@ -26,8 +26,12 @@ const MagicSquareSubject = ({
       className={`flex w-40 h-40 border-[1px] justify-center content-center bg-ra-300 flex-wrap ${
         isSpinning ? `pointer-events-none` : `pointer-events-auto`
       }`}
-      onMouseOver={() => setMouseOver(currentLevel !== 0 && true)}
-      onMouseLeave={() => setMouseOver(currentLevel !== 0 && false)}
+      onMouseOver={() =>
+        setMouseOver(currentLevel !== CategoryLevel.NOTHING && true)
+      }
+      onMouseLeave={() =>
+        setMouseOver(currentLevel !== CategoryLevel.NOTHING && false)
+      }
     >
       {isSpinning ? (
         <div
@@ -78,9 +82,9 @@ const MagicSquareSubject = ({
                 className={`bg-ra-400 p-1 m-1 text-center rounded text-white transition-all ${
                   mouseOver ? `block` : `hidden`
                 }`}
-                onClick={onClickSearchButton}
+                onClick={() => onClickSearchButton(subject)}
               >
-                검색
+                맛집 검색
               </button>
             ) : null}
           </div>

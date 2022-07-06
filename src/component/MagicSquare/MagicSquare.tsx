@@ -87,8 +87,10 @@ const MagicSquare = ({
     startRoulette(20, Math.floor(Math.random() * 8));
   };
 
-  const onClickSearchButton = () => {
-    console.dir("onClickSearchButton");
+  const onClickSearchButton = (value: string) => {
+    window
+      .open(`https://www.google.com/search?q=${value}+맛집`, "_blank")
+      ?.focus();
   };
 
   const onClickItemButton = (value: number) => {
