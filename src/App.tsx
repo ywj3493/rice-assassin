@@ -4,9 +4,11 @@ import "./App.css";
 import useCascadingCategory, {
   useMockCascadingCategory,
 } from "./hook/useCascadingCategory";
+import Header from "./component/header/Header";
 import MagicSquare from "./component/MagicSquare/MagicSquare";
 import Category from "./interface/Category";
 import { fillUpToLen } from "./lib/randUtil";
+import Footer from "./component/footer/Footer";
 
 function App() {
   const [
@@ -15,6 +17,7 @@ function App() {
     getChildren,
     chooseChild,
     chooseRandom,
+    resetLevel,
   ] = useCascadingCategory();
   const primaryCurrentCategory: Category = { key: "primary", name: "테마" };
   const itemList = fillUpToLen(getChildren(), 8);
@@ -23,22 +26,21 @@ function App() {
     0,
     currentCategory ? currentCategory : primaryCurrentCategory
   );
-  const onClickResetButton = () => {
-    console.dir("onClickResetButton");
-  };
   return (
     <div className="bg-ra-100 font-bold">
-      <div>오늘의 밥도둑</div>
-      <MagicSquare
-        currentLevel={currentLevel}
-        currentCategory={
-          currentCategory ? currentCategory : primaryCurrentCategory
-        }
-        itemList={itemList}
-        chooseChild={chooseChild}
-        chooseRandom={chooseRandom}
-        onClickResetButton={onClickResetButton}
-      />
+      <Header />
+      <section className={`flex justify-center`}>
+        <MagicSquare
+          currentLevel={currentLevel}
+          currentCategory={
+            currentCategory ? currentCategory : primaryCurrentCategory
+          }
+          itemList={itemList}
+          chooseChild={chooseChild}
+          resetLevel={resetLevel}
+        />
+      </section>
+      <Footer />
     </div>
   );
 }

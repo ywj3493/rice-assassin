@@ -1,6 +1,8 @@
 import React, { memo, useEffect, useState } from "react";
-import { CategoryLevelType } from "../../hook/useCascadingCategory";
-import Category from "../../interface/Category";
+import {
+  CategoryLevel,
+  CategoryLevelType,
+} from "../../hook/useCascadingCategory";
 
 const MagicSquareSubject = ({
   currentLevel,
@@ -14,7 +16,7 @@ const MagicSquareSubject = ({
   subject: string;
   isSpinning: boolean;
   onClickRandomButton: () => void;
-  onClickSearchButton: () => void;
+  onClickSearchButton: (value: string) => void;
   onClickResetButton: () => void;
 }) => {
   const [mouseOver, setMouseOver] = useState<boolean>(false);
@@ -24,8 +26,12 @@ const MagicSquareSubject = ({
       className={`flex w-40 h-40 border-[1px] justify-center content-center bg-ra-300 flex-wrap ${
         isSpinning ? `pointer-events-none` : `pointer-events-auto`
       }`}
-      onMouseOver={() => setMouseOver(currentLevel !== 0 && true)}
-      onMouseLeave={() => setMouseOver(currentLevel !== 0 && false)}
+      onMouseOver={() =>
+        setMouseOver(currentLevel !== CategoryLevel.NOTHING && true)
+      }
+      onMouseLeave={() =>
+        setMouseOver(currentLevel !== CategoryLevel.NOTHING && false)
+      }
     >
       {isSpinning ? (
         <div
@@ -52,27 +58,33 @@ const MagicSquareSubject = ({
               mouseOver ? `h-[50%]` : `h-0`
             }`}
           >
-            {currentLevel !== 3 ? (
+            {currentLevel !== CategoryLevel.MEDIUM_CATEGORY ? (
               <button
-                className={`bg-ra-400 p-1 m-1 text-center rounded text-white`}
+                className={`bg-ra-400 p-1 m-1 text-center rounded text-white transition-all ${
+                  mouseOver ? `block` : `hidden`
+                }`}
                 onClick={onClickRandomButton}
               >
                 랜덤 선택
               </button>
             ) : (
               <button
-                className={`bg-ra-400 p-1 m-1 text-center rounded text-white`}
+                className={`bg-ra-400 p-1 m-1 text-center rounded text-white transition-all ${
+                  mouseOver ? `block` : `hidden`
+                }`}
                 onClick={onClickResetButton}
               >
                 다시하기
               </button>
             )}
-            {currentLevel > 1 ? (
+            {currentLevel === CategoryLevel.MEDIUM_CATEGORY ? (
               <button
-                className={`bg-ra-400 p-1 m-1 text-center rounded text-white`}
-                onClick={onClickSearchButton}
+                className={`bg-ra-400 p-1 m-1 text-center rounded text-white transition-all ${
+                  mouseOver ? `block` : `hidden`
+                }`}
+                onClick={() => onClickSearchButton(subject)}
               >
-                검색
+                맛집 검색
               </button>
             ) : null}
           </div>

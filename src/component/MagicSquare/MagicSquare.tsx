@@ -9,20 +9,29 @@ const MagicSquare = ({
   currentCategory,
   itemList,
   chooseChild,
-  chooseRandom,
-  onClickResetButton,
+  resetLevel,
 }: {
   currentLevel: CategoryLevelType;
   currentCategory: Category;
   itemList: Category[];
   chooseChild: (childKey: string) => void;
-  chooseRandom: () => void;
-  onClickResetButton: () => void;
+  resetLevel: () => void;
 }) => {
   const [highlight, setHighlight] = useState<number | null>();
   const [selected, setSelected] = useState<number | null>();
+  const [exceptList, setExceptList] = useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+  ]);
   const [isSpinning, setIsSpinning] = useState<boolean>(false);
-  const rotateList = [1, 2, 5, 8, 7, 6, 3, 0];
+  const rotateList = [0, 1, 2, 5, 8, 7, 6, 3];
   const originList = [
     `origin-top-left`,
     `origin-top`,
@@ -32,27 +41,56 @@ const MagicSquare = ({
     `origin-right`,
     `origin-bottom-left`,
     `origin-bottom`,
-    `orifin-bottom-right`,
+    `origin-bottom-right`,
   ];
 
-  const startRoulette = (time: number, index: number, count: number) => {
+  useEffect(() => {
+    setExceptList([
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+    ]);
+  }, [currentLevel]);
+
+  /**
+   * 마방진의 item 부분을 룰렛 돌리듯 랜덤으로 선택하게 하는 함수, 재귀를 통해 순서대로 강조 하게 된다.
+   * @param time : 다음 네모칸이 강조 되는 시간
+   * @param index : 강조될 칸의 index
+   * @returns
+   */
+  const startRoulette = (time: number, index: number) => {
     setIsSpinning(true);
     if (time > 800) {
-      setSelected(rotateList[(index + 7) % 8]);
+      //해당 setTimeout 함수의 delay 값이 마지막 칸에 멈춘 후 선택하는 로직으로 이동하게 하는 최소 값
+      setTimeout(() => {
+        setSelected(rotateList[(index + 7) % 8]);
+      }, 200);
       return;
     }
-    setTimeout(() => {
-      setHighlight(rotateList[index % 8]);
-      startRoulette(time * 1.4, index + 1, count + 1);
-    }, time);
+    if (exceptList[rotateList[index % 8]]) {
+      startRoulette(time, index + 1);
+    } else {
+      setTimeout(() => {
+        setHighlight(rotateList[index % 8]);
+        startRoulette(time * 1.25, index + 1);
+      }, time);
+    }
   };
 
   const onClickRandomButton = () => {
-    startRoulette(20, Math.floor(Math.random() * 8), 0);
+    startRoulette(20, Math.floor(Math.random() * 8));
   };
 
-  const onClickSearchButton = () => {
-    console.dir("onClickSearchButton");
+  const onClickSearchButton = (value: string) => {
+    window
+      .open(`https://www.google.com/search?q=${value}+맛집`, "_blank")
+      ?.focus();
   };
 
   const onClickItemButton = (value: number) => {
@@ -60,15 +98,33 @@ const MagicSquare = ({
     setSelected(value);
   };
 
+  const onClickResetButton = () => {
+    resetLevel();
+  };
+
+  const onChangeCheckbox = (index: number) => {
+    if (
+      exceptList.reduce((prev, curr) => prev + (curr ? 0 : 1), 0) <= 2
+        ? !exceptList[index]
+        : false
+    ) {
+      alert("두개 이하로 아이템을 비활성화 할 수는 없습니다.");
+      return;
+    }
+    const temp = exceptList;
+    temp[index] = !temp[index];
+    setExceptList([...temp]);
+  };
+
   const onAnimationEnd = () => {
     setTimeout(() => {
-      if (selected) {
+      if (selected != null && selected != undefined) {
         chooseChild(itemList[selected]?.key);
       }
       setHighlight(null);
       setIsSpinning(false);
       setSelected(null);
-    }, 100);
+    }, 0);
   };
 
   return (
@@ -91,15 +147,14 @@ const MagicSquare = ({
               ) : (
                 <MagicSquareItem
                   key={`ms-y-${currentLevel}${index}`}
+                  currentLevel={currentLevel}
                   index={index}
                   item={itemList[index]?.name}
                   highlight={highlight === index}
-                  animation={
-                    selected === index
-                      ? `animate-larger${rotateList[index]}`
-                      : null
-                  }
-                  onClickItemButton={() => onClickItemButton(index)}
+                  animation={selected === index}
+                  except={exceptList[index]}
+                  onClickItemButton={onClickItemButton}
+                  onChangeCheckbox={onChangeCheckbox}
                   onAnimationEnd={() => onAnimationEnd()}
                 />
               );
@@ -111,4 +166,4 @@ const MagicSquare = ({
   );
 };
 
-export default MagicSquare;
+export default memo(MagicSquare);
