@@ -1,5 +1,8 @@
 import React, { memo, useEffect, useState } from "react";
-import { CategoryLevelType } from "../../hook/useCascadingCategory";
+import {
+  CategoryLevel,
+  CategoryLevelType,
+} from "../../hook/useCascadingCategory";
 
 const MagicSquareSubject = ({
   currentLevel,
@@ -51,7 +54,7 @@ const MagicSquareSubject = ({
               mouseOver ? `h-[50%]` : `h-0`
             }`}
           >
-            {currentLevel !== 3 ? (
+            {currentLevel !== CategoryLevel.MEDIUM_CATEGORY ? (
               <button
                 className={`bg-ra-400 p-1 m-1 text-center rounded text-white transition-all ${
                   mouseOver ? `block` : `hidden`
@@ -70,7 +73,7 @@ const MagicSquareSubject = ({
                 다시하기
               </button>
             )}
-            {currentLevel > 1 ? (
+            {currentLevel === CategoryLevel.MEDIUM_CATEGORY ? (
               <button
                 className={`bg-ra-400 p-1 m-1 text-center rounded text-white transition-all ${
                   mouseOver ? `block` : `hidden`
